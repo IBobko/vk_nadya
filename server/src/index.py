@@ -23,13 +23,14 @@ def get_status(vk):
 
 def do_status(vk):
     global current_status
-    ts = time.time()
+    ts = int(time.time())
+    libreoffice_epoch = (ts + 60 * 60 * 3) / (60 * 60 * 24) + 25569
     date_time_obj = datetime.now()
     status = get_status(vk)
-    line = "{},{}\n".format(int(ts), status)
-    print(line)
-    # with open("onlines/{}.csv".format(date_time_obj.strftime("%Y-%m-%d")), "a+") as f:
-    #     f.write(line)
+    line = "{}, {}, {}\n".format(ts, status, libreoffice_epoch)
+    print()
+    with open("onlines/{}.csv".format(date_time_obj.strftime("%Y-%m-%d")), "a+") as f:
+        f.write(line)
     if current_status != status and status == 1:
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -51,7 +52,6 @@ def init():
 
 
 if __name__ == '__main__':
-    do_status(do_session().get_api())
-    print(1)
+    init()
 
 
