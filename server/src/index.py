@@ -16,9 +16,9 @@ def do_session():
     return vk_session
 
 
-def get_status(vk):
+def get_info(vk):
     users = vk.users.get(user_ids='3917431', fields=['online'])
-    return users[0]['online']
+    return users[0]
 
 
 def do_status(vk):
@@ -26,8 +26,9 @@ def do_status(vk):
     ts = int(time.time())
     libreoffice_epoch = (ts + 60 * 60 * 3) / (60 * 60 * 24) + 25569
     date_time_obj = datetime.now()
-    status = get_status(vk)
-    line = "{}, {}, {}\n".format(ts, status, libreoffice_epoch)
+    info = get_info(vk)
+    status = info['online']
+    line = "{}, {}, {}, {}\n".format(ts, status, libreoffice_epoch, 1 if 'online_mobile' in info else 0)
     print(line)
     with open("onlines/{}.csv".format(date_time_obj.strftime("%Y-%m-%d")), "a+") as f:
         f.write(line)
