@@ -28,7 +28,7 @@ def do_status(vk):
     date_time_obj = datetime.now()
     status = get_status(vk)
     line = "{}, {}, {}\n".format(ts, status, libreoffice_epoch)
-    print()
+    print(line)
     with open("onlines/{}.csv".format(date_time_obj.strftime("%Y-%m-%d")), "a+") as f:
         f.write(line)
     if current_status != status and status == 1:
